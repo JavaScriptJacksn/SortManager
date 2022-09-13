@@ -5,7 +5,15 @@ public class BinaryTreeSorter implements Sorter {
     @Override
     public int[] sortArray(int[] arrayToSort) {
 
-        Node start = new Node(10);
+        Node start = new Node(arrayToSort[0]);
+        Tree tree = new Tree();
+
+        for (int i = 1; i < arrayToSort.length; i++){ // Creates nodes of tree
+            tree.add(start, arrayToSort[i]);
+        }
+
+        tree.inorderRec(start); // Print nodes need refactor to MVC!!!!!111!!11!!!1!!!
+
 
 
         return new int[0];
@@ -45,6 +53,15 @@ public class BinaryTreeSorter implements Sorter {
                     // Create new tree recursion if node exists
                     add(start.right, data);
                 }
+            }
+        }
+        void inorderRec(Node start)
+        {
+            if (start != null)
+            {
+                inorderRec(start.left);
+                System.out.print(start.data + " ");
+                inorderRec(start.right);
             }
         }
     }

@@ -4,13 +4,14 @@ public class MergeSorter implements Sorter{
     @Override
     public int[] sortArray(int[] arrayToSort) {
 
-        sort(arrayToSort, 0, arrayToSort.length);
+        sort(arrayToSort, 0, arrayToSort.length-1);
 
         return arrayToSort;
     }
 
 
     static void sort(int[] array, int left, int right) {
+
         if (left < right) {
             // Find the middle point
             int mid = left + (right - left) / 2;

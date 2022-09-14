@@ -1,5 +1,7 @@
 package com.sparta.jjackson.sorters;
 
+import java.util.ArrayList;
+
 public class BinaryTreeSorter implements Sorter {
 
     @Override
@@ -12,11 +14,9 @@ public class BinaryTreeSorter implements Sorter {
             tree.add(start, arrayToSort[i]);
         }
 
-        tree.inorderRec(start); // Print nodes need refactor to MVC!!!!!111!!11!!!1!!!
+        ArrayList<Integer> result = new ArrayList<>();
 
-
-
-        return new int[0];
+        return tree.inorderRec(start, result);
     }
 
 
@@ -37,7 +37,7 @@ public class BinaryTreeSorter implements Sorter {
         void add(Node start, int data){
 
             // If less go left, if null recall add
-            if (start.data > data) {
+            if (start.data >= data) {
                 if (start.left == null) {
                     start.left = new Node(data);
                 } else {
@@ -46,7 +46,7 @@ public class BinaryTreeSorter implements Sorter {
                 }
             }
             // If bigger go right, if null create new node
-            else if (start.data < data) {
+            else {
                 if (start.right == null){
                     start.right = new Node(data);
                 } else {
@@ -55,14 +55,16 @@ public class BinaryTreeSorter implements Sorter {
                 }
             }
         }
-        void inorderRec(Node start)
-        {
+        int[] inorderRec(Node start, ArrayList<Integer> result) {
+
             if (start != null)
             {
-                inorderRec(start.left);
-                System.out.print(start.data + " ");
-                inorderRec(start.right);
+                inorderRec(start.left, result);
+                result.add(start.data);
+                inorderRec(start.right, result);
             }
+
+            return result.stream().mapToInt(i -> i).toArray(); // Stack overflow thanks Java 8
         }
     }
 }

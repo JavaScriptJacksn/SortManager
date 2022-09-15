@@ -1,0 +1,20 @@
+[INFO ] 2022-09-15 18:42:10.498 [main] SortManager - Custom validation.....
+[INFO ] 2022-09-15 18:42:10.500 [main] SortManager - Invalid
+[ERROR] 2022-09-15 18:42:10.500 [main] SortManager - Choice outside of accepted values
+com.sparta.jjackson.exceptions.ChoiceException: Choice outside of accepted values
+	at com.sparta.jjackson.controller.SortManager.getInput(SortManager.java:65) ~[classes/:?]
+	at com.sparta.jjackson.controller.SortManager.setSorterChoice(SortManager.java:39) ~[classes/:?]
+	at com.sparta.jjackson.controller.SortManager.start(SortManager.java:26) ~[classes/:?]
+	at com.sparta.jjackson.Main.main(Main.java:10) ~[classes/:?]
+[ERROR] 2022-09-15 18:42:27.358 [main] SortManager - null
+java.util.InputMismatchException: null
+	at java.util.Scanner.throwFor(Scanner.java:943) ~[?:?]
+	at java.util.Scanner.next(Scanner.java:1598) ~[?:?]
+	at java.util.Scanner.nextInt(Scanner.java:2263) ~[?:?]
+	at java.util.Scanner.nextInt(Scanner.java:2217) ~[?:?]
+	at com.sparta.jjackson.controller.SortManager.getInput(SortManager.java:62) ~[classes/:?]
+	at com.sparta.jjackson.controller.SortManager.setSorterChoice(SortManager.java:39) ~[classes/:?]
+	at com.sparta.jjackson.controller.SortManager.start(SortManager.java:26) ~[classes/:?]
+	at com.sparta.jjackson.Main.main(Main.java:10) ~[classes/:?]
+[INFO ] 2022-09-15 18:42:35.079 [main] SortManager - Custom validation.....
+[INFO ] 2022-09-15 18:42:35.079 [main] SortManager - Input valid

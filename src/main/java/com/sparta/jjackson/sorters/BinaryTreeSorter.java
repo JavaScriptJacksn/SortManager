@@ -33,7 +33,6 @@ public class BinaryTreeSorter implements Sorter {
     }
 
     class Tree{
-
         void add(Node start, int data){
 
             // If less go left, if null recall add

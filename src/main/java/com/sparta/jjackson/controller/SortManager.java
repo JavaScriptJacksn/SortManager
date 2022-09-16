@@ -16,6 +16,11 @@ public class SortManager {
 
     private int[] array = ArrayGenerator.generateArray(100);
 
+    private long startTime;
+    private long endTime;
+
+    private long totalTime;
+
     private int[] sortedArray;
     private final DisplayManager display = new DisplayManager();
 
@@ -24,13 +29,19 @@ public class SortManager {
     public void start(){
         display.displayChoice();
         setSorterChoice();
-        display.displayArray(array);
+        display.displayArray(array, "Unsorted Array");
         runSorter(array);
-        display.displayArray(sortedArray);
+        display.displayArray(sortedArray, "Sorted Array");
+        display.displaySortTime(totalTime);
     }
 
     void runSorter(int[] array){
-        this.sortedArray = sorter.sortArray(array);
+        startTime = System.currentTimeMillis();
+        logger.info("Start time");
+        sortedArray = sorter.sortArray(array);
+        endTime = System.currentTimeMillis();
+        logger.info("End time");
+        totalTime = endTime - startTime;
     }
 
     // Set program choice

@@ -69,5 +69,4 @@ public class MergeSorter implements Sorter{
             k++;
         }
     }
-
 }

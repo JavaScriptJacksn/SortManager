@@ -13,9 +13,14 @@ public class DisplayManager {
                             "Enter sorter to use:");
     }
 
-    public void displayArray(int[] array){
-        System.out.println("---------------------------------------------------");
+    public void displayArray(int[] array, String message){
+        System.out.println("----------------------" + message + "-----------------------");
         System.out.println(Arrays.toString(array));
+        System.out.println("------------------------------------------------------------");
+    }
+
+    public void displaySortTime(long time){
+        System.out.println("That took " + time + " Milliseconds.");
     }
 
 }

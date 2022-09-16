@@ -14,7 +14,7 @@ Apache log4j logging is also used, if chosen to leave it on for console output t
 
 Below image represents the program output with logging to the console turned off.
 
-![img_4.png](img_4.png)
+![img_4.png](static/img_4.png)
 
 ### Sort Manager
 ```java
@@ -461,7 +461,7 @@ class MainTest{
 ```
 
 ##### Results
-![img_1.png](img_1.png)
+![img_1.png](static/img_1.png)
 
 ### Speed tests
 
@@ -499,7 +499,7 @@ class SpeedTests {
 
 #### Results
 
-![img_2.png](img_2.png)
+![img_2.png](static/img_2.png)
 
 All tests were run multiple times, with a pattern emerging of the bubble sort being slower in all cases and the merge sort being the fastest.
 

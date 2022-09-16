@@ -6,20 +6,18 @@ import com.sparta.jjackson.views.DisplayManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class SortManager {
 
-    private Sorter sorter;
+    private Sorter sorter1 = null;
 
-    private int[] array = ArrayGenerator.generateArray(100);
+    private Sorter sorter2 = null;
 
-    private long startTime;
-    private long endTime;
+    private final int[] array1 = ArrayGenerator.generateArray(100);
 
-    private long totalTime;
+    private final int[] array2 = array1.clone();
 
     private int[] sortedArray;
     private final DisplayManager display = new DisplayManager();
@@ -28,36 +26,58 @@ public class SortManager {
 
     public void start(){
         display.displayChoice();
-        setSorterChoice();
-        display.displayArray(array, "Unsorted Array");
-        runSorter(array);
-        display.displayArray(sortedArray, "Sorted Array");
+        setSorterChoice(1);
+        display.displayChoseSecond();
+        setSorterChoice(2);
+        display.displayArray(array1, "Unsorted Array");
+        runSorter(array1, this.sorter1);
+        display.displayArray(sortedArray, "Algorithm 1");
+        if (this.sorter2 != null){
+            runSorter(array2, this.sorter2);
+            display.displayArray(sortedArray, "Algorithm 2");
+        }
+    }
+
+    void runSorter(int[] array, Sorter sorter){
+        long startTime = System.currentTimeMillis();
+        logger.info("Start time");
+        sortedArray = sorter.sortArray(array);
+        long endTime = System.currentTimeMillis();
+        logger.info("End time");
+        long totalTime = endTime - startTime;
         display.displaySortTime(totalTime);
     }
 
-    void runSorter(int[] array){
-        startTime = System.currentTimeMillis();
-        logger.info("Start time");
-        sortedArray = sorter.sortArray(array);
-        endTime = System.currentTimeMillis();
-        logger.info("End time");
-        totalTime = endTime - startTime;
-    }
-
     // Set program choice
-     void setSorterChoice() {
-        int[] choices = {1,2,3};
-        int input = getInput(choices);
+     void setSorterChoice(int sorterNum) {
 
-        switch(input){
-            case 1:
-                this.sorter = new BubbleSorter();
-            case 2:
-                this.sorter = new MergeSorter();
-            case 3:
-                this.sorter = new BinaryTreeSorter();
+        if (sorterNum == 1){
+            int[] choices = {1,2,3};
+            int input = getInput(choices);
+
+            switch (input) {
+                case 1 -> this.sorter1 = new BubbleSorter();
+                case 2 -> this.sorter1 = new MergeSorter();
+                case 3 -> this.sorter1 = new BinaryTreeSorter();
+            }
+        } else {
+            int[] choices = {1, 2, 3, 4};
+            int input = getInput(choices);
+
+            switch(input){
+                case 1:
+                    this.sorter2 = new BubbleSorter();
+                    break;
+                case 2:
+                    this.sorter2 = new MergeSorter();
+                    break;
+                case 3:
+                    this.sorter2 = new BinaryTreeSorter();
+                    break;
+                case 4:
+                    break;
+            }
         }
-
     }
 
     // Get input

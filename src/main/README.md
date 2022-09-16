@@ -5,137 +5,165 @@ The sort manager program implements a generic Sorter interface with one method s
 - Merge sort
 - Binary Tree sort
 
+
 Each of these algorithms are used withing the program in an MVC pattern, with the SortManager class controlling the flow of the program making use of the ArrayGenerator class to
-get an array to sort, with the user deciding which sorting algorithm to use. 
+get an array to sort, with the user deciding which sorting algorithm to use. The use can also chose for the option to compare the algorithm with another, with one sorting array1, and the other array2, with both arrays having the same content via the clone method.
 
 The SortManager method runSorter uses System.currentMilliseconds() to calculate the time of each sort operation.
 
 Apache log4j logging is also used, if chosen to leave it on for console output to log the Start and End times of the sorting algorithm that runs at the level of INFO.
 
-Below image represents the program output with logging to the console turned off.
+Below image represents the program output with logging to the console turned off and two algorithms chosen for comparison.
 
-![img_4.png](static/img_4.png)
+![img.png](static/img.png)
 
 ### Sort Manager
 ```java
 public class SortManager {
 
-    private Sorter sorter;
+  private Sorter sorter1 = null;
 
-    private int[] array = ArrayGenerator.generateArray(100);
+  private Sorter sorter2 = null;
 
-    private long startTime;
-    private long endTime;
+  private final int[] array1 = ArrayGenerator.generateArray(100);
 
-    private long totalTime;
+  private final int[] array2 = array1.clone();
 
-    private int[] sortedArray;
-    private final DisplayManager display = new DisplayManager();
+  private int[] sortedArray;
+  private final DisplayManager display = new DisplayManager();
 
-    public static Logger logger = LogManager.getLogger(SortManager.class); // Logger
+  public static Logger logger = LogManager.getLogger(SortManager.class); // Logger
 
-    public void start(){
-        display.displayChoice();
-        setSorterChoice();
-        display.displayArray(array, "Unsorted Array");
-        runSorter(array);
-        display.displayArray(sortedArray, "Sorted Array");
-        display.displaySortTime(totalTime);
+  public void start(){
+    display.displayChoice();
+    setSorterChoice(1);
+    display.displayChoseSecond();
+    setSorterChoice(2);
+    display.displayArray(array1, "Unsorted Array");
+    runSorter(array1, this.sorter1);
+    display.displayArray(sortedArray, "Algorithm 1");
+    if (this.sorter2 != null){
+      runSorter(array2, this.sorter2);
+      display.displayArray(sortedArray, "Algorithm 2");
     }
+  }
 
-    void runSorter(int[] array){
-        startTime = System.currentTimeMillis();
-        logger.info("Start time");
-        sortedArray = sorter.sortArray(array);
-        endTime = System.currentTimeMillis();
-        logger.info("End time");
-        totalTime = endTime - startTime;
+  void runSorter(int[] array, Sorter sorter){
+    long startTime = System.currentTimeMillis();
+    logger.info("Start time");
+    sortedArray = sorter.sortArray(array);
+    long endTime = System.currentTimeMillis();
+    logger.info("End time");
+    long totalTime = endTime - startTime;
+    display.displaySortTime(totalTime);
+  }
+
+  // Set program choice
+  void setSorterChoice(int sorterNum) {
+
+    if (sorterNum == 1){
+      int[] choices = {1,2,3};
+      int input = getInput(choices);
+
+      switch (input) {
+        case 1 -> this.sorter1 = new BubbleSorter();
+        case 2 -> this.sorter1 = new MergeSorter();
+        case 3 -> this.sorter1 = new BinaryTreeSorter();
+      }
+    } else {
+      int[] choices = {1, 2, 3, 4};
+      int input = getInput(choices);
+
+      switch(input){
+        case 1:
+          this.sorter2 = new BubbleSorter();
+          break;
+        case 2:
+          this.sorter2 = new MergeSorter();
+          break;
+        case 3:
+          this.sorter2 = new BinaryTreeSorter();
+          break;
+        case 4:
+          break;
+      }
     }
+  }
 
-    // Set program choice
-     void setSorterChoice() {
-        int[] choices = {1,2,3};
-        int input = getInput(choices);
+  // Get input
+  int getInput(int[] choices){
 
-        switch(input){
-            case 1:
-                this.sorter = new BubbleSorter();
-            case 2:
-                this.sorter = new MergeSorter();
-            case 3:
-                this.sorter = new BinaryTreeSorter();
+    Scanner scan = new Scanner(System.in);
+    int input = 0;
+    boolean validInt = false;
+
+    do {
+      try {
+        validInt = true;
+        input = scan.nextInt();
+        logger.info("Custom validation.....");
+        if (!validateInput(input, choices)){
+          throw new ChoiceException("Choice outside of accepted values");
         }
+      } catch (ChoiceException | InputMismatchException e){
+        logger.error(e.getMessage(), e);
+        scan.next();
+        validInt = false;
+        System.out.println("Please enter 1, 2 or 3");
+      }
+    } while (!validInt);
 
+    return input;
+  }
+
+  // Validate input
+  boolean validateInput(int input, int[] expectedChoices){
+
+    for (int choice : expectedChoices){
+      if (choice == input){
+        logger.info("Input valid");
+        return true;
+      }
     }
-
-    // Get input
-      int getInput(int[] choices){
-
-        Scanner scan = new Scanner(System.in);
-        int input = 0;
-        boolean validInt = false;
-
-        do {
-            try {
-                validInt = true;
-                input = scan.nextInt();
-                logger.info("Custom validation.....");
-                if (!validateInput(input, choices)){
-                    throw new ChoiceException("Choice outside of accepted values");
-                }
-            } catch (ChoiceException | InputMismatchException e){
-                logger.error(e.getMessage(), e);
-                scan.next();
-                validInt = false;
-                System.out.println("Please enter 1, 2 or 3");
-            }
-        } while (!validInt);
-
-        return input;
-    }
-
-    // Validate input
-      boolean validateInput(int input, int[] expectedChoices){
-
-        for (int choice : expectedChoices){
-            if (choice == input){
-                logger.info("Input valid");
-                return true;
-            }
-        }
-        System.out.println("Please enter a 1, 2 or 3");
-        logger.info("Invalid");
-        return false;
-    }
+    System.out.println("Please enter a 1, 2 or 3");
+    logger.info("Invalid");
+    return false;
+  }
 }
 ```
 
 ### Display Manager
 ```java
-package com.sparta.jjackson.views;
-
-import java.util.Arrays;
-
 public class DisplayManager {
 
-    public void displayChoice(){
-        System.out.println("---------------------------------------------------\n" +
-                            "SORT MANAGER          |\n" +
-                            "1. Bubble Sort        |\n" +
-                            "2. Merge Sort         |\n" +
-                            "3. Binary Tree Sort   |\n" +
-                            "Enter sorter to use:");
-    }
+  public void displayChoice(){
+    System.out.println("---------------------------------------------------\n" +
+            "SORT MANAGER          |\n" +
+            "1. Bubble Sort        |\n" +
+            "2. Merge Sort         |\n" +
+            "3. Binary Tree Sort   |\n" +
+            "Enter sorter to use:");
+  }
 
-    public void displayArray(int[] array, String message){
-        System.out.println("----------------------" + message + "-----------------------");
-        System.out.println(Arrays.toString(array));
-        System.out.println("------------------------------------------------------------");
-    }
+  public void displayArray(int[] array, String message){
+    System.out.println("----------------------" + message + "-----------------------");
+    System.out.println(Arrays.toString(array));
+    System.out.println("------------------------------------------------------------");
+  }
 
-    public void displaySortTime(long time){
-        System.out.println("That took " + time + " Milliseconds.");
-    }
+  public void displaySortTime(long time){
+    System.out.println("That took " + time + " Milliseconds.");
+  }
+
+  public void displayChoseSecond(){
+    System.out.println("Would you like to compare it to another?\n" +
+            "SORT MANAGER          |\n" +
+            "1. Bubble Sort        |\n" +
+            "2. Merge Sort         |\n" +
+            "3. Binary Tree Sort   |\n" +
+            "4. No                 |\n" +
+            "Enter sorter to use:\n ");
+  }
 
 }
 ```

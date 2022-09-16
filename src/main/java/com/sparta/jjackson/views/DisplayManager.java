@@ -23,4 +23,13 @@ public class DisplayManager {
         System.out.println("That took " + time + " Milliseconds.");
     }
 
+    public void displayChoseSecond(){
+        System.out.println("Would you like to compare it to another?\n" +
+                "SORT MANAGER          |\n" +
+                "1. Bubble Sort        |\n" +
+                "2. Merge Sort         |\n" +
+                "3. Binary Tree Sort   |\n" +
+                "4. No                 |\n" +
+                "Enter sorter to use:\n ");
+    }
 }
